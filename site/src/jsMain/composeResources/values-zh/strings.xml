@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">BDS 资源管理器</string>
+    <string name="app_description">适用于基岩版专用服务器的附加包和资源包管理器</string>
+
+    <string name="not_available">暂不可用</string>
+
+    <string name="main_open_directory">打开文件夹</string>
+    <string name="main_open_directory_remotely">远程管理</string>
+
+    <string name="main_settings">设置</string>
+    <string name="main_settings_theme">颜色主题</string>
+    <string name="main_settings_theme_dark">深色模式</string>
+    <string name="main_settings_theme_contrast">对比度</string>
+    <string name="main_settings_theme_contrast_normal">正常</string>
+    <string name="main_settings_theme_contrast_medium">中</string>
+    <string name="main_settings_theme_contrast_high">高</string>
+    <string name="main_settings_about">关于网页</string>
+</resources>

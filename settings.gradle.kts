@@ -1,4 +1,4 @@
-rootProject.name = "gradle-multi-module-project-template"
+rootProject.name = "bds-pack-manager"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
@@ -11,8 +11,16 @@ pluginManagement {
 dependencyResolutionManagement {
     @Suppress("UnstableApiUsage")
     repositories {
+        google {
+            mavenContent {
+                includeGroupAndSubgroups("androidx")
+                includeGroupAndSubgroups("com.android")
+                includeGroupAndSubgroups("com.google")
+            }
+        }
         mavenCentral()
     }
 }
 
-//include(":")
+include(":core")
+include(":site")
