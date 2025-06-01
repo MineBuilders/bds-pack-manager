@@ -2,25 +2,23 @@ package fs.webdav
 
 import fs.IDirectory
 
-class WDDirectory : IDirectory<WDPath, WDDirectory, WDFile> {
-    override val name: String
-        get() = TODO("Not yet implemented")
-    override val parent: WDDirectory?
-        get() = TODO("Not yet implemented")
-
-    override suspend fun delete() {
-        TODO("Not yet implemented")
+class WDDirectory(
+    client: WebDavClient, path: String = ""
+) : WDPath(client, path), IDirectory<WDPath, WDDirectory, WDFile> {
+    override suspend fun getItems() = client.list(path).map {
+        if (it.isDirectory) WDDirectory(client, resolvePath(it.name))
+        else WDFile(client, resolvePath(it.name))
     }
 
-    override suspend fun getItems(): List<WDPath> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun resolveFile(name: String, create: Boolean) =
+        WDFile(client, resolvePath(name)).also {
+            if (create) runCatching { client.list(it.path) }
+                .onFailure { _ -> it.writeRaw(byteArrayOf()) }
+        }
 
-    override suspend fun resolveFile(name: String, create: Boolean): WDFile {
-        TODO("Not yet implemented")
-    }
+    override suspend fun resolveDirectory(name: String, create: Boolean) =
+        WDDirectory(client, resolvePath(name))
+            .also { if (create) runCatching { client.mkdir(it.path) } }
 
-    override suspend fun resolveDirectory(name: String, create: Boolean): WDDirectory {
-        TODO("Not yet implemented")
-    }
+    private fun resolvePath(name: String) = "$path/$name"
 }

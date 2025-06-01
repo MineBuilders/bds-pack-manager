@@ -1,5 +1,6 @@
 package fs
 
+import js.typedarrays.toByteArray
 import org.khronos.webgl.Uint8Array
 import web.fs.FileSystemFileHandle
 
@@ -7,11 +8,8 @@ actual open class File(
     override val parent: Directory?,
     override val handle: FileSystemFileHandle,
 ) : Path(parent, handle), IFile<Path, Directory, File> {
-    actual override suspend fun readRaw(): ByteArray {
-        val file = handle.getFile()
-        val uint8Array = file.bytes()
-        return ByteArray(uint8Array.length) { i -> uint8Array[i].toByte() }
-    }
+    actual override suspend fun readRaw() =
+        handle.getFile().bytes().toByteArray()
 
     actual override suspend fun writeRaw(content: ByteArray) {
         val writable = handle.createWritable()

@@ -34,10 +34,10 @@ kotlin {
             implementation(compose.material3)
             implementation(compose.materialIconsExtended)
             implementation(compose.components.resources)
-
-            implementation(projects.core)
         }
         jsMain.dependencies {
+            implementation(kotlinWrappers.browser)
+            implementation(projects.core)
         }
     }
 }

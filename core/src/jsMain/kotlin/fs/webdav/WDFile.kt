@@ -1,30 +1,28 @@
 package fs.webdav
 
 import fs.IFile
+import js.typedarrays.toByteArray
+import org.khronos.webgl.Uint8Array
+import web.blob.Blob
+import web.blob.BlobPropertyBag
 
-class WDFile : IFile<WDPath, WDDirectory, WDFile> {
-    override val name: String
-        get() = TODO("Not yet implemented")
-    override val parent: WDDirectory?
-        get() = TODO("Not yet implemented")
-
-    override suspend fun delete() {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun readRaw(): ByteArray {
-        TODO("Not yet implemented")
-    }
+class WDFile(
+    client: WebDavClient, path: String
+) : WDPath(client, path), IFile<WDPath, WDDirectory, WDFile> {
+    override suspend fun readRaw() =
+        client.download(path).bytes().toByteArray()
 
     override suspend fun writeRaw(content: ByteArray) {
-        TODO("Not yet implemented")
+        val uint8Array = Uint8Array(content.toTypedArray())
+        val data = Blob(arrayOf(uint8Array), BlobPropertyBag(type = "application/octet-stream"))
+        client.upload(path, data)
     }
 
-    override suspend fun readText(): String {
-        TODO("Not yet implemented")
-    }
+    override suspend fun readText() =
+        client.download(path).text()
 
     override suspend fun writeText(content: String) {
-        TODO("Not yet implemented")
+        val data = Blob(arrayOf(content), BlobPropertyBag(type = "text/plain"))
+        client.upload(path, data)
     }
 }
