@@ -24,7 +24,6 @@ import ui.component.NestedDropdownMenu
 import ui.theme.Contrast
 import ui.utils.toDp
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun App(switchTheme: ThemeSwitcher) {
     val snackbarHostState = remember { SnackbarHostState() }
@@ -45,9 +44,9 @@ fun App(switchTheme: ThemeSwitcher) {
         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Column(
                 Modifier
-                    .widthIn(max = 800.dp)
+                    .widthIn(max = 832.dp)
                     .fillMaxSize()
-                    .padding(horizontal = 16.dp)
+                    .padding(horizontal = 32.dp)
                     .verticalScroll(scrollState)
             ) {
                 Spacer(Modifier.height(window.innerHeight.toDp() * .4f))
@@ -110,7 +109,8 @@ fun App(switchTheme: ThemeSwitcher) {
                                 Text(remoteError ?: "", Modifier.width(widthDp))
                             }
                             OutlinedTextField(
-                                modifier = Modifier.onGloballyPositioned { width = it.size.width },
+                                modifier = Modifier
+                                    .onGloballyPositioned { width = it.size.width },
                                 value = remoteHost,
                                 onValueChange = { remoteHost = it },
                                 label = { Text(stringResource(Res.string.main_open_directory_remotely_host)) },
@@ -118,6 +118,7 @@ fun App(switchTheme: ThemeSwitcher) {
                                 singleLine = true,
                             )
                             OutlinedTextField(
+                                modifier = Modifier.width(widthDp),
                                 value = remoteUsername,
                                 onValueChange = { remoteUsername = it },
                                 label = { Text(stringResource(Res.string.main_open_directory_remotely_username)) },
@@ -125,6 +126,7 @@ fun App(switchTheme: ThemeSwitcher) {
                                 singleLine = true,
                             )
                             OutlinedTextField(
+                                modifier = Modifier.width(widthDp),
                                 value = remotePassword,
                                 onValueChange = { remotePassword = it },
                                 label = { Text(stringResource(Res.string.main_open_directory_remotely_password)) },
