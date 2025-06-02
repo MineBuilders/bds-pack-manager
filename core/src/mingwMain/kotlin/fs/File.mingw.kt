@@ -3,7 +3,7 @@ package fs
 import kotlinx.cinterop.*
 import platform.windows.*
 
-actual open class File(path: String) : Path(path), IFile<Path, Directory, File> {
+actual open class File(path: String) : Path(path), IFile<Path, File, Directory> {
     actual override suspend fun readRaw() = memScoped {
         val handle = CreateFileW(
             path,
@@ -60,7 +60,9 @@ actual open class File(path: String) : Path(path), IFile<Path, Directory, File> 
         if (success == 0) error("Failed to write file: ${GetLastError()}")
     }
 
-    actual override suspend fun readText() = readRaw().decodeToString()
+    actual override suspend fun readText() =
+        readRaw().decodeToString()
 
-    actual override suspend fun writeText(content: String) = writeRaw(content.encodeToByteArray())
+    actual override suspend fun writeText(content: String) =
+        writeRaw(content.encodeToByteArray())
 }

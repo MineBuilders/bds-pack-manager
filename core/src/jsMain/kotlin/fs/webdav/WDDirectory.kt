@@ -4,7 +4,7 @@ import fs.IDirectory
 
 class WDDirectory(
     client: WebDavClient, path: String = ""
-) : WDPath(client, path), IDirectory<WDPath, WDDirectory, WDFile> {
+) : WDPath(client, path), IDirectory<WDPath, WDFile, WDDirectory> {
     override suspend fun getItems() = client.list(path).map {
         if (it.isDirectory) WDDirectory(client, resolvePath(it.name))
         else WDFile(client, resolvePath(it.name))

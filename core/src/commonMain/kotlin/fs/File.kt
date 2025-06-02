@@ -1,6 +1,6 @@
 package fs
 
-expect open class File : Path, IFile<Path, Directory, File> {
+expect open class File : Path, IFile<Path, File, Directory> {
     override suspend fun readRaw(): ByteArray
     override suspend fun writeRaw(content: ByteArray)
 

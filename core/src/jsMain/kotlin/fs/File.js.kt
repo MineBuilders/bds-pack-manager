@@ -7,7 +7,7 @@ import web.fs.FileSystemFileHandle
 actual open class File(
     override val parent: Directory?,
     override val handle: FileSystemFileHandle,
-) : Path(parent, handle), IFile<Path, Directory, File> {
+) : Path(parent, handle), IFile<Path, File, Directory> {
     actual override suspend fun readRaw() =
         handle.getFile().bytes().toByteArray()
 

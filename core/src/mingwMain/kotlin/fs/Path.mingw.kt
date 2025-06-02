@@ -4,7 +4,7 @@ import platform.windows.*
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 
-actual abstract class Path internal constructor(val path: String) : IPath<Path, Directory, File> {
+actual abstract class Path internal constructor(val path: String) : IPath<Path, File, Directory> {
     actual override val name: String
         get() = path.substringAfterLast('\\')
 

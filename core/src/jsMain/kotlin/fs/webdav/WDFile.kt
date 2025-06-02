@@ -8,7 +8,7 @@ import web.blob.BlobPropertyBag
 
 class WDFile(
     client: WebDavClient, path: String
-) : WDPath(client, path), IFile<WDPath, WDDirectory, WDFile> {
+) : WDPath(client, path), IFile<WDPath, WDFile, WDDirectory> {
     override suspend fun readRaw() =
         client.download(path).bytes().toByteArray()
 

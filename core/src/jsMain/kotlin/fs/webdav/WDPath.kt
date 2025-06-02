@@ -5,7 +5,7 @@ import fs.IPath
 abstract class WDPath internal constructor(
     val client: WebDavClient,
     path: String,
-) : IPath<WDPath, WDDirectory, WDFile> {
+) : IPath<WDPath, WDFile, WDDirectory> {
     val path = WebDavClient.ensureSubPath(path)
 
     override val name

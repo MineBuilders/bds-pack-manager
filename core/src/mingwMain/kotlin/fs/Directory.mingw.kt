@@ -6,7 +6,7 @@ import kotlinx.cinterop.ptr
 import kotlinx.cinterop.toKString
 import platform.windows.*
 
-actual class Directory(path: String) : Path(path), IDirectory<Path, Directory, File> {
+actual class Directory(path: String) : Path(path), IDirectory<Path, File, Directory> {
     actual override suspend fun getItems(): List<Path> = memScoped {
         val result = mutableListOf<Path>()
         val findData = alloc<WIN32_FIND_DATAW>()

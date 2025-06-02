@@ -1,10 +1,10 @@
 package fs
 
 interface IDirectory<
-        Path : IPath<Path, Directory, File>,
-        Directory : IDirectory<Path, Directory, File>,
-        File : IFile<Path, Directory, File>
-        > : IPath<Path, Directory, File> {
+        Path : IPath<Path, File, Directory>,
+        File : IFile<Path, File, Directory>,
+        Directory : IDirectory<Path, File, Directory>,
+        > : IPath<Path, File, Directory> {
     suspend fun getItems(): List<Path>
 
     suspend fun resolveFile(name: String, create: Boolean = false): File
