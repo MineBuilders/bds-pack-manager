@@ -1,6 +1,11 @@
 version:0
 string|app_description|QWRkb24gJiByZXNvdXJjZSBwYWNrIG1hbmFnZXIgZm9yIEJlZHJvY2sgRGVkaWNhdGVkIFNlcnZlci4=
 string|app_name|QkRTIFBhY2sgTWFuYWdlcg==
+string|main_open_directory_remotely_cancel|Q2FuY2Vs
+string|main_open_directory_remotely_connect|Q29ubmVjdA==
+string|main_open_directory_remotely_host|SG9zdA==
+string|main_open_directory_remotely_password|UGFzc3dvcmQ=
+string|main_open_directory_remotely_username|VXNlcm5hbWU=
 string|main_open_directory_remotely|UmVtb3RlIFdlYkRBVg==
 string|main_open_directory|T3BlbiBEaXJlY3Rvcnk=
 string|main_settings_about|QWJvdXQ=
@@ -11,4 +16,3 @@ string|main_settings_theme_contrast|Q29udHJhc3Q=
 string|main_settings_theme_dark|RGFyayBNb2Rl
 string|main_settings_theme|VGhlbWU=
 string|main_settings|U2V0dGluZ3M=
-string|not_available|Tm90IGF2YWlsYWJsZS4=
