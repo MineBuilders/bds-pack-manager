@@ -27,7 +27,7 @@ class WebDavClient(host: String, username: String, password: String) {
             body = body
         ),
     ).also {
-        if (!it.ok) error("WebDAV error ${it.status}: ${it.statusText}")
+        if (!it.ok) error("WebDAV request error ${it.status}: ${it.statusText}")
     }
 
     class ListItem(val name: String, val isDirectory: Boolean)

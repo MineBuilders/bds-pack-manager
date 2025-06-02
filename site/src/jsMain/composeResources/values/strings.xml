@@ -2,10 +2,13 @@
     <string name="app_name">BDS Pack Manager</string>
     <string name="app_description">Addon &amp; resource pack manager for Bedrock Dedicated Server.</string>
 
-    <string name="not_available">Not available.</string>
-
     <string name="main_open_directory">Open Directory</string>
     <string name="main_open_directory_remotely">Remote WebDAV</string>
+    <string name="main_open_directory_remotely_host">Host</string>
+    <string name="main_open_directory_remotely_username">Username</string>
+    <string name="main_open_directory_remotely_password">Password</string>
+    <string name="main_open_directory_remotely_connect">Connect</string>
+    <string name="main_open_directory_remotely_cancel">Cancel</string>
 
     <string name="main_settings">Settings</string>
     <string name="main_settings_theme">Theme</string>

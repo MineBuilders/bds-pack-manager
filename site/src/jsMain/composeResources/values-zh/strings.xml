@@ -2,10 +2,13 @@
     <string name="app_name">BDS 资源管理器</string>
     <string name="app_description">适用于基岩版专用服务器的附加包和资源包管理器</string>
 
-    <string name="not_available">暂不可用</string>
-
     <string name="main_open_directory">打开文件夹</string>
     <string name="main_open_directory_remotely">远程管理</string>
+    <string name="main_open_directory_remotely_host">主机</string>
+    <string name="main_open_directory_remotely_username">用户名</string>
+    <string name="main_open_directory_remotely_password">密码</string>
+    <string name="main_open_directory_remotely_connect">连接</string>
+    <string name="main_open_directory_remotely_cancel">取消</string>
 
     <string name="main_settings">设置</string>
     <string name="main_settings_theme">颜色主题</string>
