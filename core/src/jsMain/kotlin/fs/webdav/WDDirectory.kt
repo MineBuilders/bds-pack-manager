@@ -1,6 +1,7 @@
 package fs.webdav
 
 import fs.IDirectory
+import fs.RawData
 
 class WDDirectory(
     client: WebDavClient, path: String = ""
@@ -13,7 +14,7 @@ class WDDirectory(
     override suspend fun resolveFile(name: String, create: Boolean) =
         WDFile(client, resolvePath(name)).also {
             if (create) runCatching { client.list(it.path) }
-                .onFailure { _ -> it.writeRaw(byteArrayOf()) }
+                .onFailure { _ -> it.writeRaw(RawData.from(byteArrayOf())) }
         }
 
     override suspend fun resolveDirectory(name: String, create: Boolean) =

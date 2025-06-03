@@ -30,10 +30,10 @@ actual open class File(path: String) : Path(path), IFile<Path, File, Directory> 
         }
         CloseHandle(handle)
         if (success == 0) error("Failed to read file: ${GetLastError()}")
-        buffer.copyOf(bytesRead.value.toInt())
+        RawData(buffer.copyOf(bytesRead.value.toInt()))
     }
 
-    actual override suspend fun writeRaw(content: ByteArray) = memScoped {
+    actual override suspend fun writeRaw(content: RawData) = memScoped {
         val handle = CreateFileW(
             path,
             GENERIC_WRITE.convert(),
@@ -47,11 +47,11 @@ actual open class File(path: String) : Path(path), IFile<Path, File, Directory> 
             error("Failed to open file for write: ${GetLastError()}")
 
         val written = alloc<DWORDVar>()
-        val success = content.usePinned {
+        val success = content.data.usePinned {
             WriteFile(
                 handle,
                 it.addressOf(0),
-                content.size.convert(),
+                content.data.size.convert(),
                 written.ptr,
                 null
             )
@@ -61,8 +61,8 @@ actual open class File(path: String) : Path(path), IFile<Path, File, Directory> 
     }
 
     actual override suspend fun readText() =
-        readRaw().decodeToString()
+        readRaw().data.decodeToString()
 
     actual override suspend fun writeText(content: String) =
-        writeRaw(content.encodeToByteArray())
+        writeRaw(RawData(content.encodeToByteArray()))
 }
