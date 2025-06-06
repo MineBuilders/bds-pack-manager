@@ -28,15 +28,19 @@ actual class Directory(path: String) : Path(path), IDirectory<Path, File, Direct
         result
     }
 
-    actual override suspend fun resolveFile(name: String, create: Boolean): File {
+    actual override suspend fun resolveFileName(name: String, create: Boolean): File? {
         val file = File("$path\\$name")
-        if (create && !file.isFile()) file.writeText("")
+        val exist = file.isFile()
+        if (!exist && !create) return null
+        if (!exist && create) file.writeText("")
         return file
     }
 
-    actual override suspend fun resolveDirectory(name: String, create: Boolean): Directory {
-        val path = "$path\\$name"
-        if (create) CreateDirectoryW(path, null)
-        return Directory(path)
+    actual override suspend fun resolveDirectoryName(name: String, create: Boolean): Directory? {
+        val directory = Directory("$path\\$name")
+        val exist = directory.isDirectory()
+        if (!exist && !create) return null
+        if (!exist && create) CreateDirectoryW(path, null)
+        return directory
     }
 }

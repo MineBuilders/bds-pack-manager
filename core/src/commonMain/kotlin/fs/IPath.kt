@@ -1,5 +1,7 @@
 package fs
 
+typealias APath = IPath<*, *, *>
+
 interface IPath<
         Path : IPath<Path, File, Directory>,
         File : IFile<Path, File, Directory>,

@@ -17,6 +17,13 @@ abstract class WDPath internal constructor(
             return WDDirectory(client, path.substring(0, lastSlashIndex))
         }
 
+    suspend fun isExist() = try {
+        client.list(path)
+        true
+    } catch (e: Throwable) {
+        false
+    }
+
     override suspend fun delete() {
         client.remove(path)
     }

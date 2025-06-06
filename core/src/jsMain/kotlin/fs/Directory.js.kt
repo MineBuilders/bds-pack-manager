@@ -19,11 +19,13 @@ actual class Directory(
         }
     }
 
-    actual override suspend fun resolveFile(name: String, create: Boolean) =
-        File(this, handle.getFileHandle(name, FileSystemGetFileOptions(create = create)))
+    actual override suspend fun resolveFileName(name: String, create: Boolean) =
+        runCatching { File(this, handle.getFileHandle(name, FileSystemGetFileOptions(create = create))) }
+            .getOrNull()
 
-    actual override suspend fun resolveDirectory(name: String, create: Boolean) =
-        Directory(this, handle.getDirectoryHandle(name, FileSystemGetDirectoryOptions(create = create)))
+    actual override suspend fun resolveDirectoryName(name: String, create: Boolean) =
+        runCatching { Directory(this, handle.getDirectoryHandle(name, FileSystemGetDirectoryOptions(create = create))) }
+            .getOrNull()
 
     companion object {
         suspend fun requestUser() = js("window.showDirectoryPicker()")

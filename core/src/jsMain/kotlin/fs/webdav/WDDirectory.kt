@@ -11,15 +11,21 @@ class WDDirectory(
         else WDFile(client, resolvePath(it.name))
     }
 
-    override suspend fun resolveFile(name: String, create: Boolean) =
-        WDFile(client, resolvePath(name)).also {
-            if (create) runCatching { client.list(it.path) }
-                .onFailure { _ -> it.writeRaw(RawData.from(byteArrayOf())) }
-        }
+    override suspend fun resolveFileName(name: String, create: Boolean): WDFile? {
+        val file = WDFile(client, resolvePath(name))
+        val exist = file.isExist()
+        if (!exist && !create) return null
+        if (!exist && create) file.writeRaw(RawData.from(byteArrayOf()))
+        return file
+    }
 
-    override suspend fun resolveDirectory(name: String, create: Boolean) =
-        WDDirectory(client, resolvePath(name))
-            .also { if (create) runCatching { client.mkdir(it.path) } }
+    override suspend fun resolveDirectoryName(name: String, create: Boolean): WDDirectory? {
+        val directory = WDDirectory(client, resolvePath(name))
+        val exist = directory.isExist()
+        if (!exist && !create) return null
+        if (!exist && create) client.mkdir(directory.path)
+        return directory
+    }
 
     private fun resolvePath(name: String) = "$path/$name"
 }

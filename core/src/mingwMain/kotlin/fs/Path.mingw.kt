@@ -17,9 +17,21 @@ actual abstract class Path internal constructor(val path: String) : IPath<Path, 
         contract {
             returns(true) implies (this@Path is File)
         }
-        val attr = GetFileAttributesW(path)
-        return attr != INVALID_FILE_ATTRIBUTES && (attr and FILE_ATTRIBUTE_DIRECTORY.toUInt() == 0u)
+        return ((getFileAttributes() ?: return false) and
+                FILE_ATTRIBUTE_DIRECTORY.toUInt()) == 0u
     }
+
+    @OptIn(ExperimentalContracts::class)
+    fun isDirectory(): Boolean {
+        contract {
+            returns(true) implies (this@Path is Directory)
+        }
+        return ((getFileAttributes() ?: return false) and
+                FILE_ATTRIBUTE_DIRECTORY.toUInt()) != 0u
+    }
+
+    private fun getFileAttributes() =
+        GetFileAttributesW(path).takeIf { it != INVALID_FILE_ATTRIBUTES }
 
     actual override suspend fun delete() {
         if (isFile()) DeleteFileW(path)

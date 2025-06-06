@@ -1,5 +1,7 @@
 package fs
 
+typealias AFile = IFile<*, *, *>
+
 interface IFile<
         Path : IPath<Path, File, Directory>,
         File : IFile<Path, File, Directory>,
