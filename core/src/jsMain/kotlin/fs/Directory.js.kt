@@ -28,7 +28,7 @@ actual class Directory(
             .getOrNull()
 
     companion object {
-        suspend fun requestUser() = js("window.showDirectoryPicker()")
+        suspend fun showPicker() = js("window.showDirectoryPicker()")
             .unsafeCast<Promise<FileSystemDirectoryHandle>>()
             .await().let { Directory(null, it) }
     }
