@@ -24,6 +24,16 @@ kotlin {
         }
         jsMain.dependencies {
             implementation(kotlinWrappers.browser)
+            implementation(npm("fflate", "0.8.2"))
+        }
+        mingwMain.dependencies {
+            implementation(libs.jonasbroeckmann.kzip.toStringLocation()) {
+                // we only need miniz binding :)
+                exclude(group = "org.jetbrains.kotlinx", module = "kotlinx-io-core")
+            }
         }
     }
 }
+
+fun Provider<MinimalExternalModuleDependency>.toStringLocation() =
+    get().run { "$group:$name:$version" }
