@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - 'windows/**'
 
 jobs:
   build:
@@ -18,7 +20,7 @@ jobs:
           java-version: 17
           distribution: oracle
 
-      - name: Build static site
+      - name: Build Static Site
         run: |
           chmod +x ./gradlew
           ./gradlew :site:jsBrowserDistribution

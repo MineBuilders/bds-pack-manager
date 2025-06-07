@@ -1,0 +1,59 @@
+name: Build GUI Windows APP
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'site/**'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+    env:
+      BUILD_DIR: "windows/build/bin/mingwX64/releaseExecutable"
+      UPX_VERSION: "4.2.4"
+      UPX_OPTIONS: "--ultra-brute"
+    steps:
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: oracle
+
+      - name: Build Windows APP
+        run: |
+          ./gradlew :windows:linkReleaseExecutableMingwX64
+          cd ${{ env.BUILD_DIR }}
+          mv windows.exe bds-pack-manager.exe
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: bds-pack-manager-${{ github.sha }}
+          path: ${{ env.BUILD_DIR }}/
+
+      - name: Download UPX
+        run: |
+          powershell -Command "Invoke-WebRequest -Uri 'https://github.com/upx/upx/releases/download/v${{ env.UPX_VERSION }}/upx-${{ env.UPX_VERSION }}-win64.zip' -OutFile 'upx.zip'"
+          powershell -Command "Expand-Archive -Path 'upx.zip' -DestinationPath 'upx'"
+          move upx\upx-${{ env.UPX_VERSION }}-win64\upx.exe C:\Windows\System32\upx.exe
+
+      - name: Compress Executable
+        run: |
+          cd ${{ env.BUILD_DIR }}
+          upx ${{ env.UPX_OPTIONS }} -o bds-pack-manager-compressed.exe bds-pack-manager.exe
+          rm bds-pack-manager.exe
+
+      - name: Upload Compressed Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: bds-pack-manager-compressed-${{ github.sha }}
+          path: ${{ env.BUILD_DIR }}/
