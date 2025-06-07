@@ -9,7 +9,7 @@ class JsonLazy(private val json: Iterable<Char>) {
     operator fun get(vararg keys: JsonKey) =
         JsonIterator(json.iterator()).navigate(keys, 0)
 
-    private fun JsonIterator.navigate(keys: Array<out JsonKey>, index: Int): JsonValue {
+    private tailrec fun JsonIterator.navigate(keys: Array<out JsonKey>, index: Int): JsonValue {
         if (index == keys.size) return JsonParser(this).parseValue()
         skipWhitespace()
         return when (val key = keys[index]) {

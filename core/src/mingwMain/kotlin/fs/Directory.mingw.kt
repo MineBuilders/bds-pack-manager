@@ -13,18 +13,15 @@ actual class Directory(path: String) : Path(path), IDirectory<Path, File, Direct
         val handle = FindFirstFileW("$path\\*", findData.ptr)
         if (handle == INVALID_HANDLE_VALUE) return emptyList()
 
-        try {
-            do {
-                val name = findData.cFileName.toKString()
-                if (name != "." && name != "..") {
-                    val path = "$path\\$name"
-                    val isDir = (findData.dwFileAttributes and FILE_ATTRIBUTE_DIRECTORY.toUInt()) != 0u
-                    result += if (isDir) Directory(path) else File(path)
-                }
-            } while (FindNextFileW(handle, findData.ptr) != 0)
-        } finally {
-            FindClose(handle)
-        }
+        do {
+            val name = findData.cFileName.toKString()
+            if (name == "." || name == "..") continue
+            val path = "$path\\$name"
+            val isDir = (findData.dwFileAttributes and FILE_ATTRIBUTE_DIRECTORY.toUInt()) != 0u
+            result += if (isDir) Directory(path) else File(path)
+        } while (FindNextFileW(handle, findData.ptr) != 0)
+
+        FindClose(handle)
         result
     }
 
