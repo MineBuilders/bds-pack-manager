@@ -17,7 +17,14 @@ actual open class File(path: String) : Path(path), IFile<Path, File, Directory> 
         if (handle == INVALID_HANDLE_VALUE)
             error("Failed to open file: ${GetLastError()}")
 
-        val buffer = ByteArray(4096)
+        val size = alloc<LARGE_INTEGER>()
+        if (GetFileSizeEx(handle, size.ptr) == 0)
+            error("Failed to get file size: ${GetLastError()}")
+        val fileSize = size.QuadPart
+        if (fileSize <= 0 || fileSize > Int.MAX_VALUE)
+            error("Invalid file size: $fileSize")
+
+        val buffer = ByteArray(fileSize.toInt())
         val bytesRead = alloc<DWORDVar>()
         val success = buffer.usePinned {
             ReadFile(
@@ -47,7 +54,15 @@ actual open class File(path: String) : Path(path), IFile<Path, File, Directory> 
             error("Failed to open file for write: ${GetLastError()}")
 
         val written = alloc<DWORDVar>()
-        val success = content.data.usePinned {
+        val success = if (content.data.isEmpty())
+            WriteFile(
+                handle,
+                null,
+                0u,
+                written.ptr,
+                null
+            )
+        else content.data.usePinned {
             WriteFile(
                 handle,
                 it.addressOf(0),

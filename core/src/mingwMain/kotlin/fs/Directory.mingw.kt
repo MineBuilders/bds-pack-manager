@@ -29,7 +29,7 @@ actual class Directory(path: String) : Path(path), IDirectory<Path, File, Direct
         val file = File("$path\\$name")
         val exist = file.isFile()
         if (!exist && !create) return null
-        if (!exist && create) file.writeText("")
+        if (!exist && create) file.writeRaw(RawData(byteArrayOf()))
         return file
     }
 
@@ -37,7 +37,7 @@ actual class Directory(path: String) : Path(path), IDirectory<Path, File, Direct
         val directory = Directory("$path\\$name")
         val exist = directory.isDirectory()
         if (!exist && !create) return null
-        if (!exist && create) CreateDirectoryW(path, null)
+        if (!exist && create) CreateDirectoryW(directory.path, null)
         return directory
     }
 }
