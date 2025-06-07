@@ -31,3 +31,4 @@ dependencyResolutionManagement {
 
 include(":core")
 include(":site")
+include(":windows")
