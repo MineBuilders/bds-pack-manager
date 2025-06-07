@@ -66,7 +66,7 @@ fun App(switchTheme: ThemeSwitcher) {
                         onClick = {
                             scope.launch {
                                 try {
-                                    val directory = Directory.requestUser()
+                                    val directory = Directory.showPicker()
                                     manager = PackManager(directory)
                                 } catch (e: Throwable) {
                                     snackbarHostState.showSnackbar(e.message.toString())
